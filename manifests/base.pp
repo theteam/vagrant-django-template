@@ -1,3 +1,4 @@
 node "node" {
-  include apt_defaults
+  include aptitude
+  include python
 }
