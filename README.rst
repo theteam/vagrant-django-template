@@ -11,6 +11,7 @@ Based on:
 - http://rcrowley.org/talks/django-2010-11-17/
 - https://github.com/stefanfoulis/vagrant-django-playground
 - https://gist.github.com/701221
+- http://projects.puppetlabs.com/projects/puppet/wiki/Puppet_Patterns
 
 http://vagrantup.com/
 
