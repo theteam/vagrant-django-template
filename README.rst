@@ -15,9 +15,12 @@ Based on:
 - http://projects.puppetlabs.com/projects/puppet/wiki/Puppet_Patterns
 
 =========
-Installation
+Usage
 =========
 
-To add the box to the system::
+To run the VM, cd to the directory containing the Vagrantfile and run::
 
-$ vagrant box add base http://files.vagrantup.com/lucid64.box
+$ vagrant up
+
+If running for the first time, this will download the base lucid64 box from
+the Vagrant website.
