@@ -1,7 +1,7 @@
 server {
 
-    listen 0.0.0.0:80; #TODO: IP of host needs to go here.
-    server_name example.com; #TODO: hostname needs to go here.
+    listen 80;
+    server_name <%= domains_production %> *.<%= domains_production %> <%= domains_staging %>;
 
     # Set proxy headers for the passthrough
     proxy_set_header Host $host;
@@ -11,10 +11,13 @@ server {
     # Let the Set-Cookie header through.
     proxy_pass_header Set-Cookie;
 
+    # Set the timeout to Apache
+    proxy_read_timeout 120;
+
+    # Live domain only.
     ## www.domain.com -> domain.com (301 - Permanent)
-    if ($host != 'example.com') {
-        #TODO: Live host needs to go above. 
-        rewrite ^/(.*)$ http://example.com/$1 permanent; #TODO: Live host again.
+    if ($host != '<%= domains_production %>') {
+        rewrite ^/(.*)$ http://<%= domains_production %>/$1 permanent; 
     }
 
     # Max upload size.
@@ -23,39 +26,15 @@ server {
     # All media (including uploaded) is under wp-content/ so
     # instead of caching the response from apache, we're just
     # going to use nginx to serve directly from there.
-    location ~* ^/(wp-content|wp-includes)/(.*)\.(gif|jpg|jpeg|png|ico|bmp|js|css|pdf|doc)$ {
-        root /var/www/vhosts/fauna-flora.org/httpdocs;
+    location /static {
+        alias <%= static_path %>;
     }
 
-# Don't cache these pages.
-        location ~* ^/(wp-admin|wp-login.php)
-{
-            proxy_pass http://backend;
-        }
+    location /media {
+        alias <%= media_path %>;
+    }
 
-location / {
+    location / {
             proxy_pass http://backend;
-            proxy_cache main;
-            proxy_cache_key $cache_key;
-            proxy_cache_valid 30m; # 200, 301 and 302 will be cached.
-            # Fallback to stale cache on certain errors.
-            # 503 is deliberately missing, if we're down for maintenance
-# we want the page to display.
-            proxy_cache_use_stale error
-                                  timeout
-                                  invalid_header
-                                  http_500
-                                  http_502
-                                  http_504
-                                  http_404;
-            # 2 rules to dedicate the no caching rule for logged in users.
-            proxy_cache_bypass $wordpress_auth; # Do not cache the response.
-            proxy_no_cache $wordpress_auth; # Do not serve response from cache.
-        }
-
-# Cache purge URL - works in tandem with WP plugin.
-        location ~ /purge(/.*) {
-            proxy_cache_purge main "$scheme://$host$1";
-        }
-    } # End server
-} # End http
+    }
+} # End server

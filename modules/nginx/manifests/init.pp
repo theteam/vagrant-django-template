@@ -9,4 +9,9 @@ class nginx {
         require => Package["nginx"],
         notify => Service["nginx"]
     }
+    file {"/etc/nginx/sites-availablenginx.conf":
+        content => template("nginx/nginx.conf.erb"),
+        require => Package["nginx"],
+        notify => Service["nginx"]
+    }
 }

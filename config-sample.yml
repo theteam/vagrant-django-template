@@ -1,0 +1,8 @@
+host_name: node
+
+client: megacorp
+project: megacorp-wall
+
+domains:
+    production: example.com
+    staging: example.staging.theteamdigital.com
