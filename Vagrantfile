@@ -1,7 +1,5 @@
 require "./config/app_config.rb"
 
-puts "Host name: #{CONFIG['domains']['production']}"
-
 Vagrant::Config.run do |config|
   config.ssh.max_tries = 50
   config.ssh.timeout = 300
@@ -21,7 +19,7 @@ Vagrant::Config.run do |config|
     django_stack.vm.provision :puppet do |puppet|
       puppet.manifests_path = "manifests"
       puppet.module_path = "modules"
-      puppet.manifest_file = "base.pp"
+      puppet.manifest_file = "base.rb"
     end
 
     # Port forwarding to local machine.
