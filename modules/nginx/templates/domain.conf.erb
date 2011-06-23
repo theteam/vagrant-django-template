@@ -1,7 +1,7 @@
 server {
 
     listen 80;
-    server_name <%= domains_production %> *.<%= domains_production %> <%= domains_staging %>;
+    server_name <%= domains.production %> *.<%= domains.production %> <%= domains.staging %>;
 
     # Set proxy headers for the passthrough
     proxy_set_header Host $host;
@@ -16,8 +16,8 @@ server {
 
     # Live domain only.
     ## www.domain.com -> domain.com (301 - Permanent)
-    if ($host != '<%= domains_production %>') {
-        rewrite ^/(.*)$ http://<%= domains_production %>/$1 permanent; 
+    if ($host != '<%= domains.production %>') {
+        rewrite ^/(.*)$ http://<%= domains.production %>/$1 permanent; 
     }
 
     # Max upload size.
