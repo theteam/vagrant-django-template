@@ -39,13 +39,3 @@ http {
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
 }
-
-upstream apache {
-    # Defines backends.
-    # Extracting here makes it easier to load balance
-    # in the future even if we do only have one.
-    ip_hash;
-    # Apache2 is running on Port 81.
-    server 127.0.0.1:81; 
-}
-

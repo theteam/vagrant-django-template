@@ -8,6 +8,8 @@ node CONFIG['host_name'] do
     # Set all the variables we can calculate
     # from the project configuration file.
     settings = {
+        'host_name' => CONFIG['host_name'],
+        'server_admin_email' => CONFIG['server_admin_email'],
         'client_name' => CONFIG['client_name'],
         'project_name' => CONFIG['project_name'],
         'python_project_name' => CONFIG['python_project_name'],
@@ -28,10 +30,12 @@ node CONFIG['host_name'] do
     end
     
     include 'aptitude'
-    include 'apache2'
+    include 'iptables'
     include 'logrotate'
+    include 'denyhosts'
+    include 'apache2'
+    include 'nginx'
     include 'memcached'
     include 'mysql'
-    include 'nginx'
     include 'python2'
 end

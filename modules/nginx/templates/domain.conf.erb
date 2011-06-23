@@ -1,7 +1,7 @@
 server {
 
     listen 80;
-    server_name <%= domains.production %> *.<%= domains.production %> <%= domains.staging %>;
+    server_name <%= domains['production'] %> *.<%= domains['production'] %> <%= domains['staging'] %>;
 
     # Set proxy headers for the passthrough
     proxy_set_header Host $host;
@@ -16,8 +16,8 @@ server {
 
     # Live domain only.
     ## www.domain.com -> domain.com (301 - Permanent)
-    if ($host != '<%= domains.production %>') {
-        rewrite ^/(.*)$ http://<%= domains.production %>/$1 permanent; 
+    if ($host != '<%= domains['production'] %>') {
+        rewrite ^/(.*)$ http://<%= domains['production'] %>/$1 permanent; 
     }
 
     # Max upload size.
@@ -26,15 +26,15 @@ server {
     # All media (including uploaded) is under wp-content/ so
     # instead of caching the response from apache, we're just
     # going to use nginx to serve directly from there.
-    location /static {
+    location <%= static_url %> {
         alias <%= static_path %>;
     }
 
-    location /media {
+    location <%= media_url %> {
         alias <%= media_path %>;
     }
 
     location / {
-            proxy_pass http://backend;
+        proxy_pass http://127.0.0.1:81;
     }
 } # End server

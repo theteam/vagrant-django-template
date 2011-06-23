@@ -23,7 +23,7 @@ Vagrant::Config.run do |config|
       puppet.manifests_path = "manifests"
       puppet.module_path = "modules"
       puppet.manifest_file = "base.rb"
-      puppet.options = "--verbose --debug"
+      #puppet.options = "--verbose --debug"
     end
 
     # Port forwarding to local machine.

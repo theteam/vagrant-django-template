@@ -1,0 +1,24 @@
+<VirtualHost *>
+    ServerAdmin <%= server_admin_email %>
+    ServerAlias <%= domains['staging']%> 
+    ServerAlias *.<%= domains['production'] %>
+    ServerName <%= domains['production'] %> 
+
+    ErrorLog /var/log/apache2/<%= full_project_name %>.error.log
+    CustomLog /var/log/apache2/<%= full_project_name %>.access.log combined
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i \" \"%{Cookie}i\""
+
+    # Just in case, let's not serve /var/www as default.
+    DocumentRoot /var/www/nginx-default
+
+    WSGIDaemonProcess <%= client_name %>.<%= project_name %> maximum-requests=5000 processes=2 threads=10
+    WSGIProcessGroup <%= client_name %>.<%= project_name %>
+    WSGIApplicationGroup %{GLOBAL}
+
+    WSGIScriptAlias / <%= project_path %>current/etc/wsgi/<%= full_project_name %>.wsgi
+
+    <Directory <%= project_path %>current/etc/wsgi>
+        Order deny,allow
+        Allow from all
+    </Directory>
+</Virtualhost>

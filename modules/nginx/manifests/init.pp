@@ -17,7 +17,7 @@ class nginx {
     }
 
     file {$sites_available_path:
-        content => template("nginx/nginx.conf.erb"),
+        content => template("nginx/domain.conf.erb"),
         require => Package["nginx"],
         notify => Service["nginx"],
     }

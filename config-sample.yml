@@ -1,8 +1,16 @@
-host_name: node
+# Machine settings
+host_name: megacorp-node
+server_admin_email: webmaster@theteam.co.uk
 
-client: megacorp
-project: megacorp-wall
+# Project settings
+client_name: megacorp
+project_name: megacorp-wall
 
 domains:
     production: example.com
     staging: example.staging.theteamdigital.com
+
+# Django project settings
+python_project_name: example
+static_url : static/
+media_url: attachments/
