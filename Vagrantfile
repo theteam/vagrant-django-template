@@ -1,4 +1,7 @@
-require "./config/app_config.rb"
+# Load application configuration
+require 'yaml'
+ 
+CONFIG = YAML.load_file("manifests/config.yml") unless defined? CONFIG
 
 Vagrant::Config.run do |config|
   config.ssh.max_tries = 50
@@ -20,6 +23,7 @@ Vagrant::Config.run do |config|
       puppet.manifests_path = "manifests"
       puppet.module_path = "modules"
       puppet.manifest_file = "base.rb"
+      puppet.options = "--verbose --debug"
     end
 
     # Port forwarding to local machine.

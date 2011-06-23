@@ -1,7 +1,7 @@
-puts "harrow"
-puts __FILE__
-$: << File.dirname(__FILE__) + '..'
-require File.expand_path('../config/app_config', __FILE__)
+# Load application configuration
+require 'yaml'
+ 
+CONFIG = YAML.load_file("config.yml") unless defined? CONFIG
 
 node CONFIG['host_name'] do
     include aptitude
