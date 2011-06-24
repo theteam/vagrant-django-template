@@ -5,22 +5,25 @@ node $host_name do
 
     # Set all the variables we can calculate
     # from the project configuration file.
-    settings = {
+    server_settings = {
         'host_name' => "megacorp-node",
-        'server_admin_email' => Config['server_admin_email'],
-        'client_name' => Config['client_name'],
-        'project_name' => Config['project_name'],
-        'python_project_name' => Config['python_project_name'],
-        'domains' => Config['domains'],
-        'static_url' => Config['static_url'],
-        'media_url' => Config['media_url'],
+        'server_admin_email' => "webmaster@theteam.co.uk",
         'mysql_root_password' => Config['mysql_root_password'],
     }
 
-    settings['full_project_name'] = "#{settings['client_name']}_#{settings['project_name']}"
-    settings['project_path'] = "/opt/#{settings['client_name']}/#{settings['project_name']}/"
-    settings['static_path'] = "#{settings['project_path']}current/#{settings['python_project_name']}/static/"
-    settings['media_path'] = "#{settings['project_path']}attachments/"
+
+    include djangoapp
+
+    djangoapp::instance { "megacorp_project":
+        staging => {"production": "",
+                    "staging": ""},
+        
+        client_name' => "megacorp",
+        project_name' => Config['project_name'],
+        python_project_name' => Config['python_project_name'],
+        domains' => Config['domains'],
+        static_url' => Config['static_url'],
+        media_url' => Config['media_url'],
 
     # Set them in the puppet scope for use
     # lower down the manifest chain.

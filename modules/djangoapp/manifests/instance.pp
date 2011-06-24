@@ -7,6 +7,13 @@ djangoapp::instance($live_domain,
                     $wsgi_module="",
                     $requirements=false) {
 
+
+    #TODO: make these work off the kwargs coming in!!
+    settings['full_project_name'] = "#{settings['client_name']}_#{settings['project_name']}"
+    settings['project_path'] = "/opt/#{settings['client_name']}/#{settings['project_name']}/"
+    settings['static_path'] = "#{settings['project_path']}current/#{settings['python_project_name']}/static/"
+    settings['media_path'] = "#{settings['project_path']}attachments/"
+
     $venv = "${webapp::python::venv_root}/$name"
     $src = "${webapp::python::src_root}/$name"
 
