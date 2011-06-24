@@ -8,8 +8,9 @@ class nginx {
         enable => true
     }
 
-    file {"/etc/nginx/nginx.conf":
-        content => template("nginx/nginx.conf.erb"),
+    file {"nginx.conf":
+        path => "/etc/nginx/nginx.conf",
+        source => "puppet:///modules/nginx/nginx.conf",
         require => Package["nginx"],
         notify => Service["nginx"]
     }
