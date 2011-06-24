@@ -1,7 +1,3 @@
-# Load application configuration
-require 'yaml'
- 
-CONFIG = YAML.load_file("manifests/config.yml") unless defined? CONFIG
 
 Vagrant::Config.run do |config|
   config.ssh.max_tries = 50
@@ -10,7 +6,7 @@ Vagrant::Config.run do |config|
   # Machine Definitions
   config.vm.define :base do |django_stack|
   
-    django_stack.vm.host_name = CONFIG['host_name']
+    django_stack.vm.host_name = "vagrant-node"
     django_stack.vm.box = "base"
     django_stack.vm.box_url = "http://files.vagrantup.com/lucid64.box"
     

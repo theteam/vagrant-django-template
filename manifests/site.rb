@@ -1,11 +1,12 @@
-# Load application configuration
- 
-node Config['host_name'] do
+
+$host_name = "project-node"
+
+node $host_name do
 
     # Set all the variables we can calculate
     # from the project configuration file.
     settings = {
-        'host_name' => Config['host_name'],
+        'host_name' => "megacorp-node",
         'server_admin_email' => Config['server_admin_email'],
         'client_name' => Config['client_name'],
         'project_name' => Config['project_name'],
