@@ -1,7 +1,8 @@
 class apache2 {
 
-    package { "apache2": ensure => installed}
-    package { "libapache2-mod-wsgi": ensure => installed}
+    $packages = ["apache2", "libapache2-mod-wsgi", "libapache2-mod-rpaf"]
+
+    package { $packages: ensure => installed}
 
     service { apache2:
         ensure => running,

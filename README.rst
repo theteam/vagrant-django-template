@@ -34,9 +34,8 @@ The Stack
 
 *Distro*: Ubuntu Server 10.04 LTS
 
-#TODO
+#TODO: Finish.
 
-*Python*: 
 
 ====================
 Installation & Usage
@@ -45,7 +44,7 @@ Installation & Usage
 You'll probably want to check this out in your project directory somewhere,
 perhaps::
 
-$ git clone 
+$ #TODO: Fill in. 
 
 There is a sample config.yml file in the project root, copy this - editing it
 to your preferences and place it in the manifests directory::
@@ -67,13 +66,13 @@ the Vagrant website.
 2) Build an Amazon EC2 instance
 -------------------------------
 
-#TODO
+#TODO: Complete.
 
 ==============
 With Thanks to
 ==============
 
-We have taken inspriration and teachings from various parts of the web in
+We have taken inspiration and teachings from various parts of the web in
 building this, here are just a few of the resources we used to pull this 
 together:
 
@@ -83,3 +82,4 @@ together:
 - https://gist.github.com/701221
 - http://projects.puppetlabs.com/projects/puppet/wiki/Puppet_Patterns
 - http://bitfieldconsulting.com/puppet-and-mysql-create-databases-and-users
+- http://journal.uggedal.com/deploying-wsgi-applications-with-puppet/
