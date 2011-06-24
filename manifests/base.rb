@@ -16,6 +16,7 @@ node CONFIG['host_name'] do
         'domains' => CONFIG['domains'],
         'static_url' => CONFIG['static_url'],
         'media_url' => CONFIG['media_url'],
+        'mysql_root_password' => CONFIG['mysql_root_password'],
     }
 
     settings['full_project_name'] = "#{settings['client_name']}_#{settings['project_name']}"
