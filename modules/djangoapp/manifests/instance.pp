@@ -1,5 +1,6 @@
 define djangoapp::instance($client_name="",
                     $project_name="",
+                    $python_dir_name="",
                     $domains={},
                     $owner="www-data",
                     $group="www-data",
@@ -19,7 +20,7 @@ define djangoapp::instance($client_name="",
 
     $full_project_name = "${client_name}_${project_name}"
     $project_path = "/opt/${client_name}/${project_name}/"
-    $static_path = "${project_path}current/${python_project_name}/static/"
+    $static_path = "${project_path}current/${python_dir_name}/static/"
     $media_path = "${project_path}attachments/"
 
     $venv = "${webapp::python::venv_root}/$name"
@@ -27,13 +28,10 @@ define djangoapp::instance($client_name="",
 
     nginx::site { $full_project_name:
       domains => $domains,
-      aliases => $aliases,
-      root => "/var/www/$name",
-      media_url => $media_root,
-      mediaprefix => $mediaprefix,
-      upstreams => ["unix:${socket}"],
       owner => $owner,
       group => $group,
+      media_url => $media_url,
+      static_url => $static_url,
     }
 
     apache2::site { $full_project_name:
@@ -51,5 +49,4 @@ define djangoapp::instance($client_name="",
     #mysql::createdb {
     #
     #}
-  }
 }

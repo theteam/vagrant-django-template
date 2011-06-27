@@ -15,6 +15,8 @@ class apache2 {
         source => "puppet:///modules/apache2/apache2.conf",
         require => Package["apache2"],
         notify => Service["apache2"],
+        owner => "root",
+        group => "root",
     }
 
     file {"ports.conf":
@@ -22,5 +24,7 @@ class apache2 {
         source => "puppet:///modules/apache2/ports.conf",
         require => Package["apache2"],
         notify => Service["apache2"],
+        owner => "root",
+        group => "root",
     }
 }

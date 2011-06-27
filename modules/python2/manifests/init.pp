@@ -5,7 +5,6 @@ class python2 {
                "python-setuptools",
                "python-mysqldb",
                "python-imaging",
-               "python-image-library",
                "python-memcache"]
 
   package {

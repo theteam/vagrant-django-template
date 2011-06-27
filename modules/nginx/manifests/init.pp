@@ -12,6 +12,8 @@ class nginx {
         path => "/etc/nginx/nginx.conf",
         source => "puppet:///modules/nginx/nginx.conf",
         require => Package["nginx"],
-        notify => Service["nginx"]
+        notify => Service["nginx"],
+        owner => "root",
+        group => "root",
     }
 }
