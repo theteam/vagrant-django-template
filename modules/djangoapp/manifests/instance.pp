@@ -19,12 +19,35 @@ define djangoapp::instance($client_name="",
     include python2
 
     $full_project_name = "${client_name}_${project_name}"
-    $project_path = "/opt/${client_name}/${project_name}/"
+    $client_path = "/opt/${client_name}/"
+    $project_path = "${client_name}${project_name}/"
     $static_path = "${project_path}current/${python_dir_name}/static/"
     $media_path = "${project_path}attachments/"
 
     $venv = "${webapp::python::venv_root}/$name"
     $src = "${webapp::python::src_root}/$name"
+
+
+    # Create client and project paths if they
+    # do not currently exist.
+    if !defined(File[$client_path]) {
+        
+        file { $client_path:
+            ensure => directory,
+            owner => $owner,
+            group => $group
+        }
+    }
+
+    if !defined(File[$project_path]) {
+        
+        file { $project_path:
+            ensure => directory,
+            owner => $owner,
+            group => $group,
+        
+    }
+
 
     nginx::site { $full_project_name:
       domains => $domains,
@@ -49,4 +72,9 @@ define djangoapp::instance($client_name="",
     #mysql::createdb {
     #
     #}
+
+    # Everything is in place, deploy!
+    djangoapp::deploy(
+        project_path => $project_path,
+        project_checkout_dir => $project_checkout_dir)
 }
