@@ -1,57 +1,55 @@
-djangoapp::instance($live_domain,
-                    $aliases=[],
+define djangoapp::instance($client_name="",
+                    $project_name="",
+                    $domains={},
                     $owner="www-data",
                     $group="www-data",
-                    $mediaroot="",
-                    $mediaprefix="",
-                    $wsgi_module="",
+                    $static_url="/static/",
+                    $media_url="/media/",
                     $requirements=false) {
+    
+    include aptitude
+    include iptables
+    include logrotate
+    include denyhosts
+    include apache2
+    include nginx
+    include memcached
+    include mysql
+    include python2
 
-
-    #TODO: make these work off the kwargs coming in!!
-    settings['full_project_name'] = "#{settings['client_name']}_#{settings['project_name']}"
-    settings['project_path'] = "/opt/#{settings['client_name']}/#{settings['project_name']}/"
-    settings['static_path'] = "#{settings['project_path']}current/#{settings['python_project_name']}/static/"
-    settings['media_path'] = "#{settings['project_path']}attachments/"
+    $full_project_name = "${client_name}_${project_name}"
+    $project_path = "/opt/${client_name}/${project_name}/"
+    $static_path = "${project_path}current/${python_project_name}/static/"
+    $media_path = "${project_path}attachments/"
 
     $venv = "${webapp::python::venv_root}/$name"
     $src = "${webapp::python::src_root}/$name"
 
-    $pidfile = "${python::gunicorn::rundir}/${name}.pid"
-    $socket = "${python::gunicorn::rundir}/${name}.sock"
-
-    nginx::site { $name:
-      ensure => $ensure,
-      domain => $domain,
+    nginx::site { $full_project_name:
+      domains => $domains,
       aliases => $aliases,
       root => "/var/www/$name",
-      mediaroot => $mediaroot,
+      media_url => $media_root,
       mediaprefix => $mediaprefix,
       upstreams => ["unix:${socket}"],
       owner => $owner,
       group => $group,
-      # require apache to be loaded first.
-      #require => Python::Gunicorn::Instance[$name],
     }
 
-    apache2::site { $name:
-      ensure => $ensure,
-      domain => $domain,
-      root => "/var/www/$name",
-      upstreams => ["unix:${socket}"],
+    apache2::site { $full_project_name:
+      domains => $domains,
       owner => $owner,
       group => $group,
     }
 
-    python::venv::isolate { $venv:
-      ensure => $ensure,
-      requirements => $requirements ? {
-        true => "$src/requirements.txt",
-        default => undef,
-      },
+    #python::venv::isolate { $venv:
+    #  requirements => $requirements ? {
+    #    true => "$src/requirements.txt",
+    #    default => undef,
+    #  },
 
-    mysql::createdb {
-
-    }
+    #mysql::createdb {
+    #
+    #}
   }
 }
