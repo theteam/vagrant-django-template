@@ -19,6 +19,8 @@ define nginx::site($domains,
     file {$sites_enabled_path:
         ensure => link,
         target => $sites_available_path,
+        require => Package["nginx"],
+        notify => Service["nginx"],
         owner => "root",
         group => "root",
     }

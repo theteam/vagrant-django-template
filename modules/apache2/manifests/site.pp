@@ -16,6 +16,8 @@ define apache2::site($domains,
     file {$sites_enabled_path:
         ensure => link,
         target => $sites_available_path,
+        require => Package["apache2"],
+        notify => Service["apache2"],
         owner => "root",
         group => "root",
     }

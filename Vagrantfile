@@ -18,7 +18,7 @@ Vagrant::Config.run do |config|
     django_stack.vm.provision :puppet do |puppet|
       puppet.manifests_path = "manifests"
       puppet.module_path = "modules"
-      puppet.manifest_file = "example-project.pp"
+      puppet.manifest_file = "theteam-website.pp"
       #puppet.options = "--verbose --debug"
     end
 
