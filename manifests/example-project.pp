@@ -14,6 +14,7 @@ $media_url = "/media/"
 $static_url = "/static/"
 $git_checkout_url = "git@github.com"
 
+include site
 include djangoapp
 
 djangoapp::instance { "megacorp_project":

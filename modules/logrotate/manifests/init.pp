@@ -3,7 +3,7 @@ class logrotate {
     package { logrotate: ensure => installed }
 
     file {"/etc/logrotate.conf":
-        content => template("logrotate/logrotate.conf.erb"),
+        source => "puppet:///modules/logrotate/logrotate.conf",
         require => Package["logrotate"],
     }
 }

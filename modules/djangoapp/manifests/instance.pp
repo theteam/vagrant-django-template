@@ -18,6 +18,7 @@ define djangoapp::instance($client_name="",
     include memcached
     include mysql
     include python2
+    include version_control
 
     $full_project_name = "${client_name}_${project_name}"
     $client_path = "/opt/${client_name}/"
@@ -25,8 +26,8 @@ define djangoapp::instance($client_name="",
     $static_path = "${project_path}current/${python_dir_name}/static/"
     $media_path = "${project_path}attachments/"
 
-    $venv = "${project_path}venv/"
-    $src = "${project_path}src/"
+    $venv_path = "${project_path}venv/"
+    $src_path = "${project_path}src/"
 
 
     # Create client and project paths if they
@@ -46,6 +47,23 @@ define djangoapp::instance($client_name="",
             ensure => directory,
             owner => $owner,
             group => $group,
+        }
+        
+        file { $src_path:
+            ensure => directory,
+            owner => $owner,
+            group => $group,
+            require => File[$project_path],
+        }
+
+        exec { "source-checkout":
+            unless => "test -d $src_path",
+            path => "/usr/bin",
+            command => "git clone $git_checkout_url $src_path",
+            user => $owner,
+            group => $group,
+            require => [File[$src_path],
+                        Package["git-core"]],
         }
     }
 
