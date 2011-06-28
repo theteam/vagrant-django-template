@@ -4,7 +4,7 @@ class apache2 {
 
     package { $packages: ensure => installed}
 
-    service { apache2:
+    service { "apache2":
         ensure => running,
         enable => true,
         hasrestart => true,

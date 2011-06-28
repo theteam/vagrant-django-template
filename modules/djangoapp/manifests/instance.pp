@@ -10,6 +10,8 @@ define djangoapp::instance($client_name="",
                     $requirements=false) {
     
     include aptitude
+    include deployment
+    include sshd
     include iptables
     include logrotate
     include denyhosts
@@ -29,7 +31,6 @@ define djangoapp::instance($client_name="",
     $venv_path = "${project_path}venv/"
     $src_path = "${project_path}src/"
 
-
     # Create client and project paths if they
     # do not currently exist.
     if !defined(File[$client_path]) {
@@ -37,7 +38,8 @@ define djangoapp::instance($client_name="",
         file { $client_path:
             ensure => directory,
             owner => $owner,
-            group => $group
+            group => $group,
+            mode => 777,
         }
     }
 
@@ -47,23 +49,16 @@ define djangoapp::instance($client_name="",
             ensure => directory,
             owner => $owner,
             group => $group,
-        }
-        
-        file { $src_path:
-            ensure => directory,
-            owner => $owner,
-            group => $group,
-            require => File[$project_path],
+            mode => 777,
         }
 
         exec { "source-checkout":
             unless => "test -d $src_path",
             path => "/usr/bin",
-            command => "git clone $git_checkout_url $src_path",
-            user => $owner,
+            user => "deployer",
             group => $group,
-            require => [File[$src_path],
-                        Package["git-core"]],
+            command => "git clone $git_checkout_url $src_path",
+            require => [Package["git-core"]],
         }
     }
 

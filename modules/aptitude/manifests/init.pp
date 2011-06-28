@@ -1,12 +1,14 @@
 class aptitude {
-      exec { "aptitude":
+
+    exec { "aptitude-update":
         command     => "/usr/bin/aptitude update",
-        refreshonly => true;
-      }
-      cron { "aptitude":
+        refreshonly => false;
+    }
+
+    cron { "aptitude-update":
         command => "/usr/bin/aptitude update",
         user    => root,
         hour    => 23,
         minute  => 59;
-      }
+    }
 }
