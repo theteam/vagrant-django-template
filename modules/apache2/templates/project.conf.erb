@@ -1,6 +1,5 @@
 <VirtualHost *>
     ServerAdmin <%= server_admin_email %>
-    ServerAlias <%= domains['staging']%> 
     ServerAlias *.<%= domains['production'] %>
     ServerName <%= domains['production'] %> 
 
@@ -15,7 +14,7 @@
     WSGIProcessGroup <%= client_name %>.<%= project_name %>
     WSGIApplicationGroup %{GLOBAL}
 
-    WSGIScriptAlias / <%= project_path %>current/etc/wsgi/<%= full_project_name %>.wsgi
+    WSGIScriptAlias / <%= project_path %>current/etc/wsgi/production.wsgi
 
     <Directory <%= project_path %>current/etc/wsgi>
         Order deny,allow

@@ -16,7 +16,7 @@ class deployment {
         ensure  => directory,
         owner   => $deploy_user,
         group   => $deploy_group,
-        mode    => 700,
+        mode    => 755,
         require => User[$deploy_user],
     }
 
@@ -24,7 +24,7 @@ class deployment {
         ensure => present,
         owner  => $deploy_user,
         group  => $deploy_group,
-        mode   => 640,
+        mode   => 644,
         source => "puppet:///modules/deployment/ssh/authorized_keys",
     }
 
@@ -32,7 +32,7 @@ class deployment {
         ensure => present,
         owner  => $deploy_user,
         group  => $deploy_group,
-        mode   => 640,
+        mode   => 600,
         source => "puppet:///modules/deployment/ssh/id_rsa",
     }
 
@@ -40,7 +40,7 @@ class deployment {
         ensure => present,
         owner  => $deploy_user,
         group  => $deploy_group,
-        mode   => 640,
+        mode   => 644,
         source => "puppet:///modules/deployment/ssh/id_rsa.pub",
     }
 
