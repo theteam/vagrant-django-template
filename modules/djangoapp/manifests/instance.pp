@@ -58,7 +58,12 @@ define djangoapp::instance($client_name="",
             user => "deployer",
             group => $group,
             command => "git clone $git_checkout_url $src_path",
-            require => [Package["git-core"]],
+            require => [
+                        Package["git-core"],
+                        File["ssh-known-hosts"],
+                        File["ssh-public-key"],
+                        File["ssh-private-key"]
+                       ],
         }
     }
 

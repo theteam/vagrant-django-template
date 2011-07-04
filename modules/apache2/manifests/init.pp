@@ -8,6 +8,11 @@ class apache2 {
         ensure => running,
         enable => true,
         hasrestart => true,
+        require => [
+                    Package["apache2"],
+                    Package["libapache2-mod-wsgi"],
+                    Package["libapache2-mod-rpaf"],
+                   ],
     }
 
     file {"/etc/apache2/apache2.conf":

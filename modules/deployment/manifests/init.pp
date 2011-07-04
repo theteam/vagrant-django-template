@@ -12,7 +12,8 @@ class deployment {
         ensure     => "present",
     }
 
-    file {"/home/$deploy_user/.ssh":
+    file {"ssh-directory":
+        path    => "/home/$deploy_user/.ssh",
         ensure  => directory,
         owner   => $deploy_user,
         group   => $deploy_group,
@@ -20,28 +21,44 @@ class deployment {
         require => User[$deploy_user],
     }
 
-    file {"/home/$deploy_user/.ssh/authorized_keys":
-        ensure => present,
-        owner  => $deploy_user,
-        group  => $deploy_group,
-        mode   => 644,
-        source => "puppet:///modules/deployment/ssh/authorized_keys",
+    file {"ssh-authorized-keys":
+        path    => "/home/$deploy_user/.ssh/authorized_keys",
+        ensure  => present,
+        owner   => $deploy_user,
+        group   => $deploy_group,
+        mode    => 644,
+        source  => "puppet:///modules/deployment/ssh/authorized_keys",
+        require => File["ssh-directory"],
     }
 
-    file {"/home/$deploy_user/.ssh/id_rsa":
-        ensure => present,
-        owner  => $deploy_user,
-        group  => $deploy_group,
-        mode   => 600,
-        source => "puppet:///modules/deployment/ssh/id_rsa",
+    file {"ssh-known-hosts":
+        path    => "/home/$deploy_user/.ssh/known_hosts",
+        ensure  => present,
+        owner   => $deploy_user,
+        group   => $deploy_group,
+        mode    => 644,
+        source  => "puppet:///modules/deployment/ssh/known_hosts",
+        require => File["ssh-directory"],
     }
 
-    file {"/home/$deploy_user/.ssh/id_rsa.pub":
-        ensure => present,
-        owner  => $deploy_user,
-        group  => $deploy_group,
-        mode   => 644,
-        source => "puppet:///modules/deployment/ssh/id_rsa.pub",
+    file {"ssh-private-key":
+        path    => "/home/$deploy_user/.ssh/id_rsa",
+        ensure  => present,
+        owner   => $deploy_user,
+        group   => $deploy_group,
+        mode    => 600,
+        source  => "puppet:///modules/deployment/ssh/id_rsa",
+        require => File["ssh-directory"],
+    }
+
+    file {"ssh-public-key":
+        path    => "/home/$deploy_user/.ssh/id_rsa.pub",
+        ensure  => present,
+        owner   => $deploy_user,
+        group   => $deploy_group,
+        mode    => 644,
+        source  => "puppet:///modules/deployment/ssh/id_rsa.pub",
+        require => File["ssh-directory"],
     }
 
 }
