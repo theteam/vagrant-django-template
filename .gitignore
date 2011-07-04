@@ -1,4 +1,5 @@
 .vagrant
+Vagrantfile
 config.yml
 manifests/*.pp
 modules/deployment/files/ssh/id_rsa

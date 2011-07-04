@@ -10,18 +10,19 @@ The Aim
 
 The aim is to have a single way of provisioning both local virtual 
 development environments using Vagrant & Virtualbox while also at the same
-time building in such a way that the same Puppet manifests can be use
+time building in such a way that the same Puppet manifests can be used
 to provision the staging & production Amazon EC2 environments.
 
 The project should be able to be replicated on a per-project basis to
 best work with the needs of a digital agency, and therefore should be 
 as reusable as possible.
 
-About
------
+
+About & Current Status
+----------------------
 
 Under development by the theTeam, London, this project is currently still
-at an experimental phase and as such shoud not be used in production..yet.
+at an experimental phase and as such shoud not be used in production...yet.
 
 The various modules are currently suited to our needs and our needs only but
 this could change with future development. If you wish to use it, you will
@@ -34,7 +35,7 @@ The Stack
 
 *Distro*: Ubuntu Server 10.04 LTS
 
-#TODO: Finish.
+#TODO
 
 
 ====================
@@ -46,27 +47,16 @@ perhaps::
 
 $ #TODO: Fill in. 
 
-There is a sample config.yml file in the project root, copy this - editing it
-to your preferences and place it in the manifests directory::
-
-$ cp ./config-sample.yml ./manifests/config.yml
-
-Now you have two options with the available manifests:
-
 1) Build a local Vagrant development box
----------------------------------------------------------
+----------------------------------------
 
-Then to run Vagrant and provision your server, be in the project root and run::
+#TODO
 
-$ vagrant up
-
-If running for the first time, this will download the base lucid64 box from
-the Vagrant website.
 
 2) Build an Amazon EC2 instance
 -------------------------------
 
-#TODO: Complete.
+#TODO
 
 ==============
 With Thanks to
