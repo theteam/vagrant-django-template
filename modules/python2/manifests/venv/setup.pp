@@ -1,36 +1,18 @@
 # Adapted from github.com/uggedal/puppet-module-webapp
 # with massive thanks to Eivind Uggedal.
 
-define python2::venv::setup($version=latest,
-                            $requirements=undef) {
-  $root = $name
-  $owner = $python::venv::owner
-  $group = $python::venv::group
+define python2::venv::setup($requirements=undef) {
 
-  if $ensure == 'present' {
-    # Parent directory of root directory. /var/www for /var/www/blog
-    $root_parent = inline_template("<%= root.match(%r!(.+)/.+!)[1] %>")
-
-    if !defined(File[$root_parent]) {
-      file { $root_parent:
-        ensure => directory,
-        owner => $owner,
-        group => $group,
-      }
-    }
-
-    $python = $version ? {
-      'latest' => "python",
-      default => "python${version}",
-    }
+    $venv_path = $name
+    $owner = $python::venv::owner
+    $group = $python::venv::group
 
     # Does not successfully run as www-data on Debian:
-    exec { "python::venv $root":
-      command => "virtualenv -p `which ${python}` ${root}",
+    exec { "python::venv $venv_path":
+      command => "virtualenv -p `which ${python}` ${venv_path}",
       creates => $root,
-      notify => Exec["update distribute and pip in $root"],
-      require => [File[$root_parent],
-                  Package["${python}-dev"]],
+      notify => Exec["update distribute and pip in $venv_path"],
+      require => [Package["python-dev"]],
     }
 
     # Change ownership of the venv after its created with the default user:
@@ -55,7 +37,7 @@ define python2::venv::setup($version=latest,
       }
     }
 
-  } elsif $ensure == 'absent' {
+    } elsif $ensure == 'absent' {
 
     file { $root:
       ensure => $ensure,
@@ -65,5 +47,4 @@ define python2::venv::setup($version=latest,
       purge => true,
       force => true,
     }
-  }
 }

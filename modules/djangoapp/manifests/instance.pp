@@ -69,13 +69,15 @@ define djangoapp::instance($client_name="",
         }
     }
 
-    python::venv::isolate { $venv:
+    # Create a virtualenv and run the requirements file.
+    python2::venv::setup { $venv:
       requirements => $requirements ? {
         true => "$src/requirements.pip",
         default => undef,
-      },
-    
+      }
+    }
 
+    # Create the site specific nginx conf.
     nginx::site { $full_project_name:
       domains => $domains,
       owner => $owner,
@@ -84,6 +86,7 @@ define djangoapp::instance($client_name="",
       static_url => $static_url,
     }
 
+    # Create the site specific Apache conf.
     apache2::site { $full_project_name:
       domains => $domains,
       owner => $owner,
@@ -100,9 +103,9 @@ define djangoapp::instance($client_name="",
 
     # Here we split depending on if this is a Vagrant
     # machine or our actual staging/production.
-    if ( $id > 'vagrant') {
-        include deployment::development::setup{}
+    if ( $id == 'vagrant' ) {
+        deployment::development::setup { $full_project_name: }
     } else {
-        include deployment::production::setup{}
+        deployment::production::setup { $full_project_name: }
     }
 }
