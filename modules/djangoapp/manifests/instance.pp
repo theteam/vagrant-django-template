@@ -67,18 +67,14 @@ define djangoapp::instance($client_name="",
                         File[$project_path],
                        ],
         }
-
-        exec { "setup-virtualenv":
-            unless  => "test -d $venv_path",
-            path    => "/usr/local/bin:/usr/bin:/bin",
-            user    => "deployer",
-            group   => $group,
-            command => "virtualenv $venv_path",
-            require => [
-                        Exec["source-checkout"],
-                       ],
-        }
     }
+
+    python::venv::isolate { $venv:
+      requirements => $requirements ? {
+        true => "$src/requirements.pip",
+        default => undef,
+      },
+    
 
     nginx::site { $full_project_name:
       domains => $domains,
@@ -93,13 +89,6 @@ define djangoapp::instance($client_name="",
       owner => $owner,
       group => $group,
     }
-
-    #python::venv::isolate { $venv:
-    #  requirements => $requirements ? {
-    #    true => "$src/requirements.txt",
-    #    default => undef,
-    #  },
-    #
     
     # Create the MySQL database, this will do
     # nothing if it already exists.
@@ -107,5 +96,13 @@ define djangoapp::instance($client_name="",
         db_name => $full_project_name,
         db_user => $full_project_name,
         db_pass => $full_project_name,
+    }
+
+    # Here we split depending on if this is a Vagrant
+    # machine or our actual staging/production.
+    if ( $id > 'vagrant') {
+        include deployment::development::setup{}
+    } else {
+        include deployment::production::setup{}
     }
 }
