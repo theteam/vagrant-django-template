@@ -37,24 +37,25 @@ define djangoapp::instance($client_name="",
         
         file { $client_path:
             ensure => directory,
-            owner => $owner,
-            group => $group,
-            mode => 777,
+            owner  => $owner,
+            group  => $group,
+            mode   => 775,
         }
     }
 
     if !defined(File[$project_path]) {
         
         file { $project_path:
-            ensure => directory,
-            owner => $owner,
-            group => $group,
-            mode => 777,
+            ensure  => directory,
+            owner   => $owner,
+            group   => $group,
+            mode    => 775,
+            require => File[$client_path],
         }
 
         exec { "source-checkout":
-            unless => "test -d $src_path",
-            path => "/usr/bin",
+            unless  => "test -d $src_path",
+            path   => "/usr/local/bin:/usr/bin:/bin",
             user => "deployer",
             group => $group,
             command => "git clone $git_checkout_url $src_path",
@@ -62,7 +63,19 @@ define djangoapp::instance($client_name="",
                         Package["git-core"],
                         File["ssh-known-hosts"],
                         File["ssh-public-key"],
-                        File["ssh-private-key"]
+                        File["ssh-private-key"],
+                        File[$project_path],
+                       ],
+        }
+
+        exec { "setup-virtualenv":
+            unless  => "test -d $venv_path",
+            path    => "/usr/local/bin:/usr/bin:/bin",
+            user    => "deployer",
+            group   => $group,
+            command => "virtualenv $venv_path",
+            require => [
+                        Exec["source-checkout"],
                        ],
         }
     }
@@ -94,11 +107,5 @@ define djangoapp::instance($client_name="",
         db_name => $full_project_name,
         db_user => $full_project_name,
         db_pass => $full_project_name,
-    }
-
-    # Everything is in place, deploy!
-    djangoapp::deploy { $full_project_name:
-        project_path => $project_path,
-        git_checkout_url => $git_checkout_url,
     }
 }

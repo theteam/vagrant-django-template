@@ -1,5 +1,5 @@
 class python2 {
-  $packages = ["build-essential", 
+    $packages = ["build-essential", 
                "python", 
                "python-dev", 
                "python-setuptools",
@@ -7,14 +7,22 @@ class python2 {
                "python-imaging",
                "python-memcache"]
 
-  package {
-    $packages: ensure => installed;
-  }
+    package {
+        $packages: ensure => installed;
+    }
 
-  exec { "easy_install pip":
-      path => "/usr/local/bin:/usr/bin:/bin",
-      refreshonly => true,
-      require => Package["python-setuptools"],
-      subscribe => Package["python-setuptools"],
-  }
+    exec { "install-pip":
+        path        => "/usr/local/bin:/usr/bin:/bin",
+        refreshonly => true,
+        command     => "easy_install pip",
+        require     => Package["python-setuptools"],
+        subscribe   => Package["python-setuptools"],
+    }
+
+    exec { "install-virtualenv":
+        path        => "/usr/local/bin:/usr/bin:/bin",
+        refreshonly => true,
+        command     => "pip install virtualenv",
+        require     => Exec["install-pip"],
+    }
 }
