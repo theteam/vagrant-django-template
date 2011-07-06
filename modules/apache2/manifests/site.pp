@@ -1,4 +1,5 @@
-define apache2::site($domains,
+define apache2::site($production_domain,
+                     $staging_domain,
                      $owner="www-data",
                      $group="www-data") {
 

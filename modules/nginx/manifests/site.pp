@@ -1,5 +1,6 @@
 
-define nginx::site($domains,
+define nginx::site($production_domain,
+                   $staging_domain,
                    $owner="www-data",
                    $group="www-data",
                    $media_url="/media/",

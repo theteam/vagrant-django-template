@@ -1,7 +1,8 @@
 <VirtualHost *>
     ServerAdmin <%= server_admin_email %>
-    ServerAlias *.<%= domains['production'] %>
-    ServerName <%= domains['production'] %> 
+    ServerAlias <%= staging_domain %>
+    ServerAlias *.<%= production_domain %>
+    ServerName <%= production_domain %> 
 
     ErrorLog /var/log/apache2/<%= full_project_name %>.error.log
     CustomLog /var/log/apache2/<%= full_project_name %>.access.log combined

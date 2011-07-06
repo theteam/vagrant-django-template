@@ -1,7 +1,8 @@
 define djangoapp::instance($client_name="",
                     $project_name="",
                     $python_dir_name="",
-                    $domains={},
+                    $production_domain="",
+                    $staging_domain="",
                     $owner="www-data",
                     $group="www-data",
                     $static_url="/static/",
@@ -79,7 +80,8 @@ define djangoapp::instance($client_name="",
 
     # Create the site specific nginx conf.
     nginx::site { $full_project_name:
-      domains => $domains,
+      production_domain => $production_domain,
+      staging_domain => $staging_domain,
       owner => $owner,
       group => $group,
       media_url => $media_url,
@@ -88,7 +90,8 @@ define djangoapp::instance($client_name="",
 
     # Create the site specific Apache conf.
     apache2::site { $full_project_name:
-      domains => $domains,
+      production_domain => $production_domain,
+      staging_domain => $staging_domain,
       owner => $owner,
       group => $group,
     }
