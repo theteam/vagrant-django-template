@@ -11,6 +11,16 @@ class deployment {
         managehome => true,
         ensure     => "present",
     }
+    
+    # Add the user to sudoers by setting 
+    # the /etc/sudoers file.
+    file {"sudoers":
+        path => "/etc/sudoers",
+        owner => root,
+        group => root,
+        mode => 440,
+        source => "puppet://modules/deployment/etc/sudoers",
+    }
 
     file {"ssh-directory":
         path    => "/home/$deploy_user/.ssh",
