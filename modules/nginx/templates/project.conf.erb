@@ -3,6 +3,10 @@ server {
     listen 80;
     server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %>;
 
+    error_log /var/log/nginx/<%= full_project_name %>.error.log;
+    access_log /var/log/nginx/<%= full_project_name %>.access.log;
+
+
     # Set proxy headers for the passthrough
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
