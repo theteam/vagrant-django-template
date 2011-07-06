@@ -1,7 +1,7 @@
 server {
 
     listen 80;
-    server_name <%= production_domain'] %> *.<%= production_domain %> <%= staging_domain %>;
+    server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %>;
 
     # Set proxy headers for the passthrough
     proxy_set_header Host $host;

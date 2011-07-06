@@ -29,8 +29,8 @@ define djangoapp::instance($client_name="",
     $static_path = "${project_path}current/${python_dir_name}/static/"
     $media_path = "${project_path}attachments/"
 
-    $venv_path = "${project_path}venv/"
-    $src_path = "${project_path}src/"
+    $venv_path = "${project_path}venv"
+    $src_path = "${project_path}src"
 
     # Create client and project paths if they
     # do not currently exist.
@@ -71,11 +71,12 @@ define djangoapp::instance($client_name="",
     }
 
     # Create a virtualenv and run the requirements file.
-    python2::venv::setup { $venv:
-      requirements => $requirements ? {
-        true => "$src/requirements.pip",
-        default => undef,
-      }
+    python2::venv::setup { $venv_path:
+        requirements => $requirements ? {
+            true => "$src_path/requirements.pip",
+            default => undef,
+        },
+        require => Exec["source-checkout"],
     }
 
     # Create the site specific nginx conf.
@@ -104,11 +105,15 @@ define djangoapp::instance($client_name="",
         db_pass => $full_project_name,
     }
 
-    # Here we split depending on if this is a Vagrant
-    # machine or our actual staging/production.
-    if ( $id == 'vagrant' ) {
-        deployment::development::setup { $full_project_name: }
-    } else {
-        deployment::production::setup { $full_project_name: }
+        # Here we split depending on if this is a Vagrant
+        # machine or our actual staging/production.
+        if ( $id == 'vagrant' ) {
+            deployment::development::setup { $full_project_name: 
+                                             project_path => $project_path,
+                                            }
+        } else {
+            deployment::production::setup { $full_project_name: 
+                                             project_path => $project_path,
+                                            }
+        }
     }
-}

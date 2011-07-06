@@ -4,47 +4,35 @@
 define python2::venv::setup($requirements=undef) {
 
     $venv_path = $name
-    $owner = $python::venv::owner
-    $group = $python::venv::group
 
-    # Does not successfully run as www-data on Debian:
-    exec { "python::venv $venv_path":
-      command => "virtualenv -p `which ${python}` ${venv_path}",
-      creates => $root,
+    # Does not successfully run as deployer for some reason.
+    exec { "python2::venv $venv_path":
+      command => "virtualenv ${venv_path}",
+      creates => $venv_path,
+      path   => "/usr/local/bin:/usr/bin:/bin",
       notify => Exec["update distribute and pip in $venv_path"],
       require => [Package["python-dev"]],
     }
 
-    # Change ownership of the venv after its created with the default user:
-    exec { "python::venv $root chown":
-      command => "chown -R $owner:$group $root",
-      onlyif => "find $root ! (-user $owner -group $group)",
-      require => Exec["python::venv $root"],
+    # Change ownership of the venv after its created.
+    exec { "python2::venv $venv_path chown":
+      command => "chown -R deployer:www-data $venv_path",
+      onlyif => "find $venv_path ! (-user deployer -group www-data)",
+      path   => "/usr/local/bin:/usr/bin:/bin",
+      require => Exec["python2::venv $venv_path"],
     }
 
     # Some newer Python packages require an updated distribute
     # from the one that is in repos on most systems:
-    exec { "update distribute and pip in $root":
-      command => "$root/bin/pip install -U distribute pip",
+    exec { "update distribute and pip in $venv_path":
+      command => "$venv_path/bin/pip install -U distribute pip",
       refreshonly => true,
     }
 
     if $requirements {
-      python::pip::requirements { $requirements:
-        venv => $root,
-        owner => $owner,
-        group => $group,
-      }
-    }
-
-    } elsif $ensure == 'absent' {
-
-    file { $root:
-      ensure => $ensure,
-      owner => $owner,
-      group => $group,
-      recurse => true,
-      purge => true,
-      force => true,
+        python2::pip::requirements { $requirements:
+            venv => $venv_path,
+            require => Exec["python2::venv $venv_path"],
+        }
     }
 }
