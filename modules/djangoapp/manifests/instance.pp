@@ -32,6 +32,12 @@ define djangoapp::instance($client_name="",
     $venv_path = "${project_path}venv"
     $src_path = "${project_path}src"
 
+    if ( $id == 'vagrant' ) {
+        $environment = 'vagrant'
+    } else {
+        $environment = 'server'
+    }
+
     # Create client and project paths if they
     # do not currently exist.
     if !defined(File[$client_path]) {
@@ -54,20 +60,6 @@ define djangoapp::instance($client_name="",
             require => File[$client_path],
         }
 
-        exec { "source-checkout":
-            unless  => "test -d $src_path",
-            path   => "/usr/local/bin:/usr/bin:/bin",
-            user => "deployer",
-            group => $group,
-            command => "git clone $git_checkout_url $src_path",
-            require => [
-                        Package["git-core"],
-                        File["ssh-known-hosts"],
-                        File["ssh-public-key"],
-                        File["ssh-private-key"],
-                        File[$project_path],
-                       ],
-        }
     }
 
     # Create a virtualenv and run the requirements file.
@@ -105,15 +97,15 @@ define djangoapp::instance($client_name="",
         db_pass => $full_project_name,
     }
 
-        # Here we split depending on if this is a Vagrant
-        # machine or our actual staging/production.
-        if ( $id == 'vagrant' ) {
-            deployment::development::setup { $full_project_name: 
-                                             project_path => $project_path,
-                                            }
-        } else {
-            deployment::production::setup { $full_project_name: 
-                                             project_path => $project_path,
-                                            }
-        }
+    # Here we split depending on if this is a Vagrant
+    # machine or our actual staging/production.
+    if ( $environment == 'vagrant' ) {
+        deployment::development::setup { $full_project_name: 
+                                         project_path => $project_path,
+                                        }
+    } else {
+        deployment::production::setup { $full_project_name: 
+                                         project_path => $project_path,
+                                        }
     }
+}
