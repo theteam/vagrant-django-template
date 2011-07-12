@@ -1,12 +1,15 @@
-define deployment::development::setup ($project_path="") {
+define deployment::development::setup ($project_path="",
+                                       $src_path="",
+                                       $owner="deployer",
+                                       $group="www-data") {
 
     $project_name = $name
 
     exec { "source-checkout":
         unless  => "test -d $src_path",
-        path   => "/usr/local/bin:/usr/bin:/bin",
-        user => "deployer",
-        group => $group,
+        path    => "/usr/local/bin:/usr/bin:/bin",
+        user    => $owner,
+        group   => $group,
         command => "git clone -b develop $git_checkout_url $src_path",
         require => [
                     Package["git-core"],
@@ -15,5 +18,14 @@ define deployment::development::setup ($project_path="") {
                     File["ssh-private-key"],
                     File[$project_path],
                    ],
+    }
+
+    file { "${project_path}current":
+        path    => "${project_path}current",
+        ensure  => link,
+        target  => $src_path,
+        require => Exec["source-checkout"],
+        owner   => $owner,
+        group   =>  $group,
     }
 }

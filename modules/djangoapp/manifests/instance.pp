@@ -102,10 +102,16 @@ define djangoapp::instance($client_name="",
     if ( $environment == 'vagrant' ) {
         deployment::development::setup { $full_project_name: 
                                          project_path => $project_path,
+                                         src_path     => $src_path,
+                                         owner        => $owner,
+                                         group        => $group,
                                         }
     } else {
         deployment::production::setup { $full_project_name: 
                                          project_path => $project_path,
+                                         src_path     => $src_path,
+                                         owner        => $owner,
+                                         group        => $group,
                                         }
     }
 }

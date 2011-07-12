@@ -1,4 +1,7 @@
-define deployment::production::setup ($project_path="") {
+define deployment::production::setup ($project_path="",
+                                       $src_path="",
+                                       $owner="deployer",
+                                       $group="www-data") {
 
     $project_name = $name
     

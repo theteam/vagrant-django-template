@@ -9,17 +9,17 @@ define apache2::site($production_domain,
     file {$sites_available_path:
         content => template("apache2/project.conf.erb"),
         require => Package["apache2"],
-        notify => Service["apache2"],
-        owner => "root",
-        group => "root",
+        notify  => Service["apache2"],
+        owner   => "root",
+        group   => "root",
     }
 
     file {$sites_enabled_path:
-        ensure => link,
-        target => $sites_available_path,
+        ensure  => link,
+        target  => $sites_available_path,
         require => Package["apache2"],
-        notify => Service["apache2"],
-        owner => "root",
-        group => "root",
+        notify  => Service["apache2"],
+        owner   => "root",
+        group   => "root",
     }
 }

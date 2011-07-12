@@ -19,7 +19,7 @@ class deployment {
         owner => root,
         group => root,
         mode => 440,
-        source => "puppet://modules/deployment/etc/sudoers",
+        content => template("deployment/etc/sudoers.erb"),
     }
 
     file {"ssh-directory":

@@ -1,7 +1,7 @@
 server {
 
     listen 80;
-    server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><%= if environment == "vagrant" %> localhost<% end %>;
+    server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><% if environment == "vagrant" %> localhost<% end %>;
 
     error_log /var/log/nginx/<%= full_project_name %>.error.log;
     access_log /var/log/nginx/<%= full_project_name %>.access.log;
