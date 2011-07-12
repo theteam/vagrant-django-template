@@ -7,9 +7,9 @@ define deployment::production::setup ($project_path="",
     
     exec { "source-checkout":
         unless  => "test -d $src_path",
-        path   => "/usr/local/bin:/usr/bin:/bin",
-        user => "deployer",
-        group => $group,
+        path    => "/usr/local/bin:/usr/bin:/bin",
+        user    => $owner,
+        group   => $group,
         command => "git clone -b master $git_checkout_url $src_path",
         require => [
                     Package["git-core"],
@@ -20,4 +20,12 @@ define deployment::production::setup ($project_path="",
                    ],
     }
 
+    file { "${project_path}current":
+        path    => "${project_path}current",
+        ensure  => directory,
+        mode    => 775,
+        require => Exec["source-checkout"],
+        owner   => $owner,
+        group   =>  $group,
+    }
 }

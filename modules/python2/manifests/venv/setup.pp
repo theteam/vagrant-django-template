@@ -11,7 +11,11 @@ define python2::venv::setup($requirements=undef) {
       creates => $venv_path,
       path   => "/usr/local/bin:/usr/bin:/bin",
       notify => Exec["update distribute and pip in $venv_path"],
-      require => [Package["python-dev"]],
+      require => [
+                    Package["python"],
+                    Package["python-dev"],
+                    Package["python-virtualenv"],
+                ],
     }
 
     # Change ownership of the venv after its created.

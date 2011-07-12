@@ -1,6 +1,6 @@
 <VirtualHost *:81>
     ServerAdmin <%= server_admin_email %>
-    <% if environment == "vagrant" %>ServerAlias localhost<% end %>
+    <% if server_type == "vagrant" %>ServerAlias localhost<% end %>
     ServerAlias <%= staging_domain %>
     ServerAlias *.<%= production_domain %>
     ServerName <%= production_domain %> 
