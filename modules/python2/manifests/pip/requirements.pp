@@ -25,6 +25,7 @@ define python2::pip::requirements($venv, $owner=undef, $group=undef) {
     cwd => $venv,
     subscribe => Exec["create new checksum of $name requirements"],
     refreshonly => true,
+    user => root,
+    group => root,
   }
 }
-

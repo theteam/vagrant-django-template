@@ -21,7 +21,6 @@ define python2::venv::setup($requirements=undef) {
     # Change ownership of the venv after its created.
     exec { "python2::venv $venv_path chown":
       command => "chown -R deployer:www-data $venv_path",
-      onlyif => "find $venv_path ! (-user deployer -group www-data)",
       path   => "/usr/local/bin:/usr/bin:/bin",
       require => Exec["python2::venv $venv_path"],
     }

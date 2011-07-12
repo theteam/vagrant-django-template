@@ -106,14 +106,14 @@ define djangoapp::instance($client_name="",
         deployment::development::setup { $full_project_name: 
                                          project_path => $project_path,
                                          src_path     => $src_path,
-                                         owner        => User["deployer"],
+                                         owner        => "deployer",
                                          group        => $group,
                                        }
     } else {
         deployment::production::setup { $full_project_name: 
                                          project_path => $project_path,
                                          src_path     => $src_path,
-                                         owner        => User["deployer"],
+                                         owner        => "deployer",
                                          group        => $group,
                                        }
     }

@@ -18,11 +18,13 @@ server {
     # Set the timeout to Apache
     proxy_read_timeout 120;
 
+    <% if server_type != "vagrant" %>
     # Live domain only.
     ## www.domain.com -> domain.com (301 - Permanent)
     if ($host != '<%= production_domain %>') {
         rewrite ^/(.*)$ http://<%= production_domain %>/$1 permanent; 
     }
+    <% end %>
 
     # Max upload size.
     client_max_body_size 8m;
