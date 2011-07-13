@@ -78,6 +78,7 @@ class deployment {
         group => $deploy_group,
         mode => 775,
         content => template("deployment/home/install_project.sh.erb"),
+        require => User[$deploy_user],
     }
 
 }
