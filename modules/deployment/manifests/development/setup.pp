@@ -26,7 +26,7 @@ define deployment::development::setup ($project_path="",
         mode => 777,
         owner => root,
         group => root,
-        ensure => directory,
+        ensure => file,
         content => template("deployment/etc/motd.erb"),
     }
 }
