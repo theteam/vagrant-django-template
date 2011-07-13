@@ -71,11 +71,7 @@ define djangoapp::instance($client_name="",
 
     # Create a virtualenv and run the requirements file.
     python2::venv::setup { $venv_path:
-        requirements => $requirements ? {
-            true => "$src_path/requirements.pip",
-            default => undef,
-        },
-        require => Exec["source-checkout"],
+        requirements => false,
     }
 
     # Create the site specific nginx conf.

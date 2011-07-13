@@ -1,4 +1,3 @@
-<%= venv_path %>/bin/activate
 <%= venv_path %>/bin/pip install -r <%= project_path %>current/requirements.pip
 <%= venv_path %>/bin/python <%= project_path %>current/scampcat/manage.py syncdb --noinput
 <%= venv_path %>/bin/python <%= project_path %>current/scampcat/manage.py collectstatic --noinput

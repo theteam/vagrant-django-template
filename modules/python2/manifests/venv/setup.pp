@@ -3,6 +3,8 @@
 
 define python2::venv::setup($requirements=undef) {
 
+    # TODO: Initial requirements loading?
+
     $venv_path = $name
 
     # Does not successfully run as deployer for some reason.
@@ -30,12 +32,5 @@ define python2::venv::setup($requirements=undef) {
     exec { "update distribute and pip in $venv_path":
       command => "$venv_path/bin/pip install -U distribute pip",
       refreshonly => true,
-    }
-
-    if $requirements {
-        python2::pip::requirements { $requirements:
-            venv => $venv_path,
-            require => Exec["python2::venv $venv_path"],
-        }
     }
 }
