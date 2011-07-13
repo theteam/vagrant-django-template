@@ -14,7 +14,7 @@ class deployment {
     
     # Add the user to sudoers by setting 
     # the /etc/sudoers file.
-    file {"sudoers":
+    file { "sudoers":
         path => "/etc/sudoers",
         owner => root,
         group => root,
@@ -22,7 +22,7 @@ class deployment {
         content => template("deployment/etc/sudoers.erb"),
     }
 
-    file {"ssh-directory":
+    file { "ssh-directory":
         path    => "/home/$deploy_user/.ssh",
         ensure  => directory,
         owner   => $deploy_user,
@@ -31,7 +31,7 @@ class deployment {
         require => User[$deploy_user],
     }
 
-    file {"ssh-authorized-keys":
+    file { "ssh-authorized-keys":
         path    => "/home/$deploy_user/.ssh/authorized_keys",
         ensure  => present,
         owner   => $deploy_user,
@@ -41,7 +41,7 @@ class deployment {
         require => File["ssh-directory"],
     }
 
-    file {"ssh-known-hosts":
+    file { "ssh-known-hosts":
         path    => "/home/$deploy_user/.ssh/known_hosts",
         ensure  => present,
         owner   => $deploy_user,
@@ -51,7 +51,7 @@ class deployment {
         require => File["ssh-directory"],
     }
 
-    file {"ssh-private-key":
+    file { "ssh-private-key":
         path    => "/home/$deploy_user/.ssh/id_rsa",
         ensure  => present,
         owner   => $deploy_user,
@@ -61,7 +61,7 @@ class deployment {
         require => File["ssh-directory"],
     }
 
-    file {"ssh-public-key":
+    file { "ssh-public-key":
         path    => "/home/$deploy_user/.ssh/id_rsa.pub",
         ensure  => present,
         owner   => $deploy_user,
@@ -69,6 +69,15 @@ class deployment {
         mode    => 644,
         source  => "puppet:///modules/deployment/ssh/id_rsa.pub",
         require => File["ssh-directory"],
+    }
+
+    # Now we make the project install script.
+    file { "install_${full_project_name}.sh":
+        path => "/home/$deploy_user/install_${full_project_name}.sh",
+        owner => $deployer_user,
+        group => $deploy_group,
+        mode => 775,
+        content => template("deployment/home/install_project.sh.erb"),
     }
 
 }

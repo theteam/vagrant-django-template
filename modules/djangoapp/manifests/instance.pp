@@ -19,6 +19,10 @@ define djangoapp::instance($client_name="",
         $server_type = 'server'
     }
 
+    #TODO: clean these up, some have trailing slashes,
+    # some do not, this is highly annoying when it comes
+    # to templating and variable insertion.
+
     $full_project_name = "${client_name}_${project_name}"
     $client_path = "/opt/${client_name}/"
     $project_path = "${client_path}${project_name}/"
