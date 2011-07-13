@@ -28,4 +28,5 @@ define deployment::development::setup ($project_path="",
         group => root,
         ensure => directory,
         content => template("deployment/etc/motd.erb"),
+    }
 }
