@@ -19,19 +19,26 @@ define djangoapp::instance($client_name="",
         $server_type = 'server'
     }
 
-    #TODO: clean these up, some have trailing slashes,
-    # some do not, this is highly annoying when it comes
-    # to templating and variable insertion.
 
+    # If you add any more path variables,
+    # KEEP A TRAILING SLASH!!
+    
     $full_project_name = "${client_name}_${project_name}"
     $client_path = "/opt/${client_name}/"
     $project_path = "${client_path}${project_name}/"
-    $static_path = "${project_path}current/${python_dir_name}/static/"
-    $media_path = "${project_path}attachments/"
+    $venv_path = "${project_path}venv/"
+    $src_path = "${project_path}src/"
+    $python_src_path = "${src_path}${python_dir_name}/"
+    $releases_path = "${project_path}releases/"
+    $deployment_current_path = "${project_path}current/"
+    $deployment_etc_path = "${project_path}etc/"
 
-    $venv_path = "${project_path}venv"
-    $src_path = "${project_path}src"
-    
+    $development_static_path = "${python_src_path}static/"
+    $development_media_path = "${python_src_path}attachments/"
+    $production_static_path = "${project_path}static/"
+    $production_media_path = "${project_path}attachments/"
+    $project_wsgi_path = "${deployment_etc_path}${full_project_name}.wsgi"
+
     include aptitude
     include deployment
     include sshd
@@ -58,6 +65,8 @@ define djangoapp::instance($client_name="",
     }
 
     if !defined(File[$project_path]) {
+
+        # Create project level directories.
         
         file { $project_path:
             ensure  => directory,
@@ -67,6 +76,47 @@ define djangoapp::instance($client_name="",
             require => File[$client_path],
         }
 
+        file { $static_path:
+            ensure  => directory,
+            owner   => $owner,
+            group   => $group,
+            mode    => 664, # rw, rw, r
+            require => File[$project_path],
+        }
+
+        file { $media_path:
+            ensure  => directory,
+            owner   => $owner,
+            group   => $group,
+            mode    => 664, # rw, rw, r
+            require => File[$project_path],
+        }
+
+        file { $releases_path:
+            ensure  => directory,
+            owner   => $owner,
+            group   => $group,
+            mode    => 664, # rw, rw, r
+            require => File[$project_path],
+        }
+
+        file { $project_etc_path:
+            ensure  => directory,
+            owner   => $owner,
+            group   => $group,
+            mode    => 664, # rw, rw, r
+            require => File[$project_path],
+        }
+    }
+
+    # Create the wsgi file.
+    apache2::mod_wsgi::setup { $project_wsgi_path:
+        venv_path   => $venv_path,
+        server_type => $server_type,
+        python_dir_name => $python_dir_name,
+        deployment_current_path => $deployment_current_path,
+        owner       => $owner,
+        group       => $group,
     }
 
     # Create a virtualenv and run the requirements file.

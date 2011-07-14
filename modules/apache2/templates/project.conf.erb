@@ -16,9 +16,9 @@
     WSGIProcessGroup <%= client_name %>.<%= project_name %>
     WSGIApplicationGroup %{GLOBAL}
 
-    WSGIScriptAlias / <%= project_path %>current/etc/wsgi/production.wsgi
+    WSGIScriptAlias / <%= project_wsgi_path %>
 
-    <Directory <%= project_path %>current/etc/wsgi>
+    <Directory <%= deployment_etc_path %>
         Order deny,allow
         Allow from all
     </Directory>

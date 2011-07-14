@@ -4,6 +4,7 @@
 define python2::venv::setup($requirements=undef) {
 
     # TODO: Initial requirements loading?
+    # Done with an internally build script for now..
 
     $venv_path = $name
 
@@ -30,7 +31,7 @@ define python2::venv::setup($requirements=undef) {
     # Some newer Python packages require an updated distribute
     # from the one that is in repos on most systems:
     exec { "update distribute and pip in $venv_path":
-      command => "$venv_path/bin/pip install -U distribute pip",
+      command => "${venv_path}bin/pip install -U distribute pip",
       refreshonly => true,
     }
 }

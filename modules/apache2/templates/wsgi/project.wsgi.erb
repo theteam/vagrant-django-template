@@ -1,0 +1,14 @@
+import site
+import sys
+import os
+
+sys.stdout = sys.stderr
+
+site.addsitedir('<%= venv_path %>lib/python2.6/site-packages')
+sys.path.insert(0, '<% deployment_current_path %>')
+
+os.environ['DJANGO_SETTINGS_MODULE'] = '<%= python_dir_name %>.settings.<% if server_type == 'vagrant' %>vagrant<% else %>production<% end %>'
+
+import django.core.handlers.wsgi
+
+application = django.core.handlers.wsgi.WSGIHandler()
