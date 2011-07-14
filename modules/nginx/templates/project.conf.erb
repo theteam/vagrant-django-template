@@ -33,7 +33,7 @@ server {
     # instead of caching the response from apache, we're just
     # going to use nginx to serve directly from there.
     location <%= static_url %> {
-        <% if server type = 'vagrant' %>
+        <% if server_type = 'vagrant' %>
             alias <%= development_static_path %>;
         <% else %>
             alias <%= production_static_path %>;
@@ -41,7 +41,7 @@ server {
     }
 
     location <%= media_url %> {
-        <% if server type = 'vagrant' %>
+        <% if server_type = 'vagrant' %>
             alias <%= development_media_path %>;
         <% else %>
             alias <%= production_media_path %>;

@@ -11,11 +11,10 @@ define apache2::mod_wsgi::setup($venv_path,
     file {$project_wsgi_path:
         content => template("apache2/project.conf.erb"),
         require => [
-                    File[$project_etc_path],
+                    File[$deployment_etc_path],
                     Package["apache2"],
                     Package["libapache2-mod-wsgi"],
-                    Service["apache2"],
-                   ]
+                   ],
         notify  => Service["apache2"],
         owner   => $owner,
         group   => $group,

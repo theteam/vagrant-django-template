@@ -76,20 +76,23 @@ define djangoapp::instance($client_name="",
             require => File[$client_path],
         }
 
-        file { $static_path:
-            ensure  => directory,
-            owner   => $owner,
-            group   => $group,
-            mode    => 664, # rw, rw, r
-            require => File[$project_path],
-        }
+        if ( $server_type != 'vagrant') {
 
-        file { $media_path:
-            ensure  => directory,
-            owner   => $owner,
-            group   => $group,
-            mode    => 664, # rw, rw, r
-            require => File[$project_path],
+            file { $production_static_path:
+                ensure  => directory,
+                owner   => $owner,
+                group   => $group,
+                mode    => 664, # rw, rw, r
+                require => File[$project_path],
+            }
+
+            file { $production_media_path:
+                ensure  => directory,
+                owner   => $owner,
+                group   => $group,
+                mode    => 664, # rw, rw, r
+                require => File[$project_path],
+            }
         }
 
         file { $releases_path:
@@ -100,7 +103,7 @@ define djangoapp::instance($client_name="",
             require => File[$project_path],
         }
 
-        file { $project_etc_path:
+        file { $deployment_etc_path:
             ensure  => directory,
             owner   => $owner,
             group   => $group,
