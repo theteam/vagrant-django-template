@@ -7,7 +7,7 @@
 
     ErrorLog /var/log/apache2/<%= full_project_name %>.error.log
     CustomLog /var/log/apache2/<%= full_project_name %>.access.log combined
-    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i \" \"%{Cookie}i\""
+    LogFormat "%h %l %u %t \"%r\" %>s %b  \"%{Host}i\" \"%{Referer}i\" \"%{User-Agent}i \" \"%{Cookie}i\""
 
     # Just in case, let's not serve /var/www as default.
     DocumentRoot /var/www/nginx-default

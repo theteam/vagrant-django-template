@@ -8,7 +8,7 @@ server {
 
 
     # Set proxy headers for the passthrough
-    proxy_set_header Host $host;
+    proxy_set_header Host <% if server_type == 'vagrant' %>$http_host<% else %>$host:$server_port<% end %>;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
