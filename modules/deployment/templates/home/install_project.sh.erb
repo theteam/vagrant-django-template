@@ -1,4 +1,4 @@
+export DJANGO_SETTINGS_MODULE='<%= python_dir_name %>.settings.vagrant'
 <%= venv_path %>bin/pip install -r <%= project_path %>current/requirements.pip
 <%= venv_path %>bin/python <%= project_path %>current/scampcat/manage.py syncdb --noinput
-<%= venv_path %>bin/python <%= project_path %>current/scampcat/manage.py collectstatic --noinput
 sudo /etc/init.d/apache2 restart

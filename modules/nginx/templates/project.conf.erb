@@ -29,9 +29,10 @@ server {
     # Max upload size.
     client_max_body_size 8m;
 
-    # All media (including uploaded) is under wp-content/ so
-    # instead of caching the response from apache, we're just
-    # going to use nginx to serve directly from there.
+    <% if server_type != 'vagrant' %>
+    # We don't serve static under a development environment,
+    # we let the django static serving views do that so we don't
+    # have to run collectstatic after every little change
     location <%= static_url %> {
         <% if server_type = 'vagrant' %>
             alias <%= development_static_path %>;
@@ -39,6 +40,7 @@ server {
             alias <%= production_static_path %>;
         <% end %>
     }
+    <% end %>
 
     location <%= media_url %> {
         <% if server_type = 'vagrant' %>

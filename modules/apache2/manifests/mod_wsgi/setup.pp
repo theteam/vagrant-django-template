@@ -9,7 +9,7 @@ define apache2::mod_wsgi::setup($venv_path,
     $project_wsgi_path = $name
 
     file {$project_wsgi_path:
-        content => template("apache2/project.conf.erb"),
+        content => template("apache2/mod_wsgi/project.wsgi.erb"),
         require => [
                     File[$deployment_etc_path],
                     Package["apache2"],
