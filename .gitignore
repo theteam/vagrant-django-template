@@ -1,9 +1,9 @@
 .vagrant
+puppet-manifest.pp
 Vagrantfile
 config.yml
-manifests/*.pp
 modules/deployment/files/ssh/id_rsa
 modules/deployment/files/ssh/id_rsa.pub
 modules/deployment/files/ssh/authorized_keys
 modules/deployment/files/ssh/known_hosts
-manifests/*.tar.gz
+*.tar.gz

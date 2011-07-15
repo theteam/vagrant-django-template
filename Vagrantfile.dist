@@ -1,4 +1,3 @@
-
 Vagrant::Config.run do |config|
   config.ssh.max_tries = 50
   config.ssh.timeout = 300
@@ -6,23 +5,32 @@ Vagrant::Config.run do |config|
   # Machine Definitions
   config.vm.define :base do |django_stack|
   
-    django_stack.vm.host_name = "vagrant-node"
+    # Make sure the host_name contains the string 'vagrant'
+    # somewhere in it, as our puppet manifests use this
+    # to work out whether we're dealing with a development
+    # or production machine.
+    django_stack.vm.host_name = "vagrant-something"
     django_stack.vm.box = "base"
     django_stack.vm.box_url = "http://files.vagrantup.com/lucid64.box"
     
-    # Uncomment the boot_mode line to move
-    # away from headless non-gui mode.
-    #django_stack.vm.boot_mode = :gui
-
     # Enable the Puppet provisioner
     django_stack.vm.provision :puppet do |puppet|
-      puppet.manifests_path = "manifests"
-      puppet.module_path = "modules"
-      puppet.manifest_file = "name-of-vm-manifest.pp"
+      puppet.manifests_path = "."
+      puppet.module_path = ENV['PUPPET_MODULES_PATH']
+      # This should link to your projects manifest.
+      # By default we keep this in the same folder
+      # as the Vagrantfile and call it puppet-manifest.pp
+      puppet.manifest_file = "puppet-manifest.pp"
+      # Uncomment for more verbose debugging output.
       #puppet.options = "--verbose --debug"
     end
 
     # Port forwarding to local machine.
     django_stack.vm.forward_port("web", 80, 8000)
+    # Share a folder from the host machine with the guest.
+    # The 2nd parameter is where to mount the share within
+    # the guest, and the 3rd is the folder from the host to 
+    # share (can be relative, like we have here). 
+    django_stack.vm.share_folder("project-root", "/opt/client-name/project-name/src", "../../")
   end
 end
