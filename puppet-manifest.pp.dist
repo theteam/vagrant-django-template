@@ -1,23 +1,21 @@
-
 # Server settings.
-$host_name = "vagrant-node"
-$server_admin_email = "webmaster@megacorp.com"
-$mysql_root_password = 'f2f23r3cwef'
+$host_name = "megacorp-1"
+$server_admin_email = "webmaster@example.com"
+$mysql_root_password = 's0mes@curep4ssw0rD!'
 
 # Project settings.
 $client_name = "megacorp"
-$project_name = "facebookwall"
-$python_dir_name = "thewall"
+$project_name = "enterprise"
+$python_dir_name = "project"
 $production_domain = "example.com"
 $staging_domain = "staging.example.com"
 $media_url = "/media/"
 $static_url = "/static/"
-$git_checkout_url = "git@github.com"
+$git_checkout_url = "git@github.com:user/megacorp_enterprise.git"
 
-include site
 include djangoapp
 
-djangoapp::instance { "megacorp_project":
+djangoapp::instance { "megacorp_enterprise":
     client_name => $client_name,
     project_name => $project_name,
     python_dir_name => $python_dir_name,
