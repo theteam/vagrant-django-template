@@ -75,11 +75,11 @@ to the modules directory.::
 
 $ git clone git://github.com/theteam/vagrant-django-template.git
 
-You will then need to set an environment variable to this modules path
-called PUPPET_MODULES_PATH. In Linux this can be done as follows (put it in
+You will then need to set an environment variable to the ``vagrant-django-template`` home
+called ``VDT_HOME``. In Linux this can be done as follows (put it in
 your bashrc or bash_profile for persistence):::
 
-$ export PUPPET_MODULES_PATH=/home/user/src/vagrant-django-template/modules
+$ export VDT_HOME=$HOME/src/vagrant-django-template
 
 #TODO
 

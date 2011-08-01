@@ -1,7 +1,7 @@
 Vagrant::Config.run do |config|
   config.ssh.max_tries = 50
   config.ssh.timeout = 300
-
+  #config.vm.boot_mode = :gui
   # Machine Definitions
   config.vm.define :base do |django_stack|
   
@@ -16,7 +16,8 @@ Vagrant::Config.run do |config|
     # Enable the Puppet provisioner
     django_stack.vm.provision :puppet do |puppet|
       puppet.manifests_path = "."
-      puppet.module_path = ENV['PUPPET_MODULES_PATH']
+      #puppet.module_path = ENV['PUPPET_MODULES_PATH']
+      puppet.module_path = ENV['VDT_HOME'] + "/modules"
       # This should link to your projects manifest.
       # By default we keep this in the same folder
       # as the Vagrantfile and call it puppet-manifest.pp
