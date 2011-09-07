@@ -1,8 +1,8 @@
-===============================
-Vagrant Django Template for EC2
-===============================
+================================
+Vagrant & Puppet Django Template
+================================
 
-A Vagrant configuration for a Django-centric machine at theTeam, utilising 
+A PuppetVagrant configuration for a Django-centric machine at theTeam, utilising 
 Puppet manifests for provisioning.
 
 The Aim
@@ -13,7 +13,7 @@ development environments using Vagrant & Virtualbox while also at the same
 time building in such a way that the same Puppet manifests can be used
 to provision the staging & production Amazon EC2 environments.
 
-The project should be able to be replicated on a per-project basis to
+The project should be able to be replicated on a per-machine basis to
 best work with the needs of a digital agency, and therefore should be 
 as reusable as possible.
 
@@ -22,7 +22,7 @@ About & Current Status
 ----------------------
 
 Under development by the theTeam, London, this project is currently still
-at an experimental phase and as such shoud not be used in production...yet.
+at an experimental phase and as such shoud not be used in production.
 
 The various modules are currently suited to our needs and our needs only but
 this could change with future development. If you wish to use it, you will
@@ -45,17 +45,6 @@ The Stack
 ====================
 Installation & Usage
 ====================
-
-*NOTE*: There are missing files for security reasons, the following files will
-need to be added before the Puppet manifests can be considered to be valid.
-
-modules/deployment/files/ssh/authorized_keys
-modules/deployment/files/ssh/known_hosts
-modules/deployment/files/ssh/id_rsa
-modules/deployment/files/ssh/id_rsa.pub
-
-They are standard SSH home directory files that we require for deployment
-(cloning from github etc, etc). For more on them, read the OpenSSH client docs.
 
 1) Build a local Vagrant development box
 ----------------------------------------
