@@ -1,5 +1,4 @@
 # Server settings.
-$host_name = "megacorp-1"
 $server_admin_email = "webmaster@example.com"
 $mysql_root_password = 's0mes@curep4ssw0rD!'
 
@@ -12,6 +11,21 @@ $staging_domain = "staging.example.com"
 $media_url = "/media/"
 $static_url = "/static/"
 $git_checkout_url = "git@github.com:user/megacorp_enterprise.git"
+
+# Include everything we
+# want on this server.
+include aptitude
+#include theTeam # our private module which include deployment keys etc.
+include sshd
+include iptables
+include logrotate
+include denyhosts
+include apache2
+include nginx
+include memcached
+include mysql
+include python2
+include version_control
 
 include djangoapp
 

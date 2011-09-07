@@ -1,5 +1,0 @@
-export DJANGO_SETTINGS_MODULE='<%= python_dir_name %>.settings.vagrant'
-<%= venv_path %>bin/pip install -r <%= project_path %>current/requirements.pip
-<%= venv_path %>bin/python <%= project_path %>current/<%= python_dir_name %>/manage.py syncdb --noinput
-sudo /etc/init.d/apache2 restart
-sudo /etc/init.d/nginx restart

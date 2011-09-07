@@ -10,15 +10,6 @@ define djangoapp::instance($client_name="",
                            $git_checkout_url="",
                            $requirements=false) {
 
-    # Test to see if this is a vagrant 
-    # machine or a non-local-virtual setup.
-
-    if ( 'vagrant' in $hostname ) {
-        $server_type = 'vagrant'
-    } else {
-        $server_type = 'server'
-    }
-
 
     # If you add any more path variables,
     # KEEP A TRAILING SLASH!!
@@ -38,19 +29,6 @@ define djangoapp::instance($client_name="",
     $production_static_path = "${project_path}static/"
     $production_media_path = "${project_path}attachments/"
     $project_wsgi_path = "${deployment_etc_path}${full_project_name}.wsgi"
-
-    include aptitude
-    include deployment
-    include sshd
-    include iptables
-    include logrotate
-    include denyhosts
-    include apache2
-    include nginx
-    include memcached
-    include mysql
-    include python2
-    include version_control
 
     # Create client and project paths
     # if they do not currently exist.
@@ -156,14 +134,14 @@ define djangoapp::instance($client_name="",
     # Here we split depending on if this is a Vagrant
     # machine or our actual staging/production.
     if ( $server_type == 'vagrant' ) {
-        deployment::development::setup { $full_project_name: 
+        djangoapp::development::setup { $full_project_name: 
                                          project_path => $project_path,
                                          src_path     => $src_path,
                                          owner        => "deployer",
                                          group        => $group,
                                        }
     } else {
-        deployment::production::setup { $full_project_name: 
+        djangoapp::production::setup { $full_project_name: 
                                          project_path => $project_path,
                                          src_path     => $src_path,
                                          owner        => "deployer",
