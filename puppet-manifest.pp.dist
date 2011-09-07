@@ -12,10 +12,14 @@ $media_url = "/media/"
 $static_url = "/static/"
 $git_checkout_url = "git@github.com:user/megacorp_enterprise.git"
 
+include machine
 # Include everything we
 # want on this server.
 include aptitude
-#include theTeam # our private module which include deployment keys etc.
+# theTeam is our private module which
+# includes our deepest, darkest secrets.
+# Like the names of our cats and things.
+#include theTeam
 include sshd
 include iptables
 include logrotate
