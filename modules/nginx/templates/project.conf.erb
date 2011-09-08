@@ -3,12 +3,12 @@ server {
     listen 80;
     server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><% if server_type == "vagrant" %> localhost<% end %>;
 
-    error_log /var/log/nginx/<%= full_project_name %>.error.log;
-    access_log /var/log/nginx/<%= full_project_name %>.access.log;
+    error_log /var/log/nginx/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.error.log;
+    access_log /var/log/nginx/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.access.log;
 
 
     # Set proxy headers for the passthrough
-    proxy_set_header Host <% if server_type == 'vagrant' %>$http_host<% else %>$host:$server_port<% end %>;
+    proxy_set_header Host <% if scope.lookupvar('machine::server_type') == 'vagrant' %>$http_host<% else %>$host:$server_port<% end %>;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
@@ -18,7 +18,7 @@ server {
     # Set the timeout to Apache
     proxy_read_timeout 120;
 
-    <% if server_type != "vagrant" %>
+    <% if scope.lookupvar('machine::server_type') != "vagrant" %>
     # Live domain only.
     ## www.domain.com -> domain.com (301 - Permanent)
     if ($host != '<%= production_domain %>') {
@@ -29,24 +29,24 @@ server {
     # Max upload size.
     client_max_body_size 8m;
 
-    <% if server_type != 'vagrant' %>
+    <% if scope.lookupvar('machine::server_type') != 'vagrant' %>
     # We don't serve static under a development environment,
     # we let the django static serving views do that so we don't
     # have to run collectstatic after every little change
     location <%= static_url %> {
         <% if server_type = 'vagrant' %>
-            alias <%= development_static_path %>;
+            alias <%= scope.lookupvar('djangoapp::instance::development_static_path') %>;
         <% else %>
-            alias <%= production_static_path %>;
+            alias <%= scope.lookupvar('djangoapp::instance::production_static_path') %>;
         <% end %>
     }
     <% end %>
 
     location <%= media_url %> {
-        <% if server_type = 'vagrant' %>
-            alias <%= development_media_path %>;
+        <% if scope.lookupvar('machine::server_type') = 'vagrant' %>
+            alias <%= scope.lookupvar('djangoapp::instance::development_media_path') %>;
         <% else %>
-            alias <%= production_media_path %>;
+            alias <%= scope.lookupvar('djangoapp::instance::production_media_path') %>;
         <% end %>
     }
 
