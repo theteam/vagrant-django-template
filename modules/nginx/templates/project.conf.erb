@@ -1,7 +1,7 @@
 server {
 
     listen 80;
-    server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><% if server_type == "vagrant" %> localhost<% end %>;
+    server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><% if scope.lookupvar('machine::server_type') == "vagrant" %> localhost<% end %>;
 
     error_log /var/log/nginx/<%= scope.lookupvar('djangoapp::full_project_name') %>.error.log;
     access_log /var/log/nginx/<%= scope.lookupvar('djangoapp::full_project_name') %>.access.log;
