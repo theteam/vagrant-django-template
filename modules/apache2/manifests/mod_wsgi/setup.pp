@@ -3,6 +3,7 @@ define apache2::mod_wsgi::setup($venv_path,
                                 $server_type,
                                 $python_dir_name,
                                 $deployment_current_path,
+                                $deployment_etc_path,
                                 $owner="deployer",
                                 $group="www-data") {
 
@@ -11,7 +12,7 @@ define apache2::mod_wsgi::setup($venv_path,
     file {$project_wsgi_path:
         content => template("apache2/mod_wsgi/project.wsgi.erb"),
         require => [
-                    File["${djangoapp::deployment_etc_path}"],
+                    File[$deployment_etc_path],
                     Package["apache2"],
                     Package["libapache2-mod-wsgi"],
                    ],

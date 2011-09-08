@@ -98,6 +98,7 @@ define djangoapp::instance($client_name="",
         server_type => $server_type,
         python_dir_name => $python_dir_name,
         deployment_current_path => $deployment_current_path,
+        deployment_etc_path => $deployment_etc_path,
         owner       => $owner,
         group       => $group,
     }
