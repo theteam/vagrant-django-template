@@ -5,8 +5,8 @@ define nginx::site($production_domain,
                    $media_url="/media/",
                    $static_url="/static/") { 
 
-    $sites_available_path = "/etc/nginx/sites-available/${djangoapp::instance::full_project_name}.conf" 
-    $sites_enabled_path = "/etc/nginx/sites-enabled/${djangoapp::instance::full_project_name}.conf"
+    $sites_available_path = "/etc/nginx/sites-available/${djangoapp::full_project_name}.conf" 
+    $sites_enabled_path = "/etc/nginx/sites-enabled/${djangoapp::full_project_name}.conf"
 
     file {$sites_available_path:
         content => template("nginx/project.conf.erb"),
