@@ -3,8 +3,8 @@ server {
     listen 80;
     server_name <%= production_domain %> *.<%= production_domain %> <%= staging_domain %><% if server_type == "vagrant" %> localhost<% end %>;
 
-    error_log /var/log/nginx/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.error.log;
-    access_log /var/log/nginx/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.access.log;
+    error_log /var/log/nginx/<%= scope.lookupvar('djangoapp::full_project_name') %>.error.log;
+    access_log /var/log/nginx/<%= scope.lookupvar('djangoapp::full_project_name') %>.access.log;
 
 
     # Set proxy headers for the passthrough
@@ -35,18 +35,18 @@ server {
     # have to run collectstatic after every little change
     location <%= static_url %> {
         <% if server_type = 'vagrant' %>
-            alias <%= scope.lookupvar('djangoapp::instance::development_static_path') %>;
+            alias <%= scope.lookupvar('djangoapp::development_static_path') %>;
         <% else %>
-            alias <%= scope.lookupvar('djangoapp::instance::production_static_path') %>;
+            alias <%= scope.lookupvar('djangoapp::production_static_path') %>;
         <% end %>
     }
     <% end %>
 
     location <%= media_url %> {
         <% if scope.lookupvar('machine::server_type') = 'vagrant' %>
-            alias <%= scope.lookupvar('djangoapp::instance::development_media_path') %>;
+            alias <%= scope.lookupvar('djangoapp::development_media_path') %>;
         <% else %>
-            alias <%= scope.lookupvar('djangoapp::instance::production_media_path') %>;
+            alias <%= scope.lookupvar('djangoapp::production_media_path') %>;
         <% end %>
     }
 
