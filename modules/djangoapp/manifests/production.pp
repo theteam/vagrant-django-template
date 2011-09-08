@@ -10,7 +10,7 @@ define djangoapp::production::setup ($project_path="",
         path    => "/usr/local/bin:/usr/bin:/bin",
         user    => $owner,
         group   => $group,
-        command => "git clone -b master ${djangoapp::instance::git_checkout_url} ${src_path}",
+        command => "git clone -b master ${djangoapp::git_checkout_url} ${src_path}",
         require => [
                     Package["git-core"],
                     File["ssh-known-hosts"],

@@ -12,8 +12,8 @@
     # Just in case, let's not serve /var/www as default.
     DocumentRoot /var/www/nginx-default
 
-    WSGIDaemonProcess <%= scope.lookupvar('djangoapp::client_name') %>.<%= scope.lookupvar('djangoapp::instance::project_name') %> maximum-requests=5000 processes=2 threads=10
-    WSGIProcessGroup <%= scope.lookupvar('djangoapp::client_name') %>.<%= scope.lookupvar('djangoapp::instance::project_name') %>
+    WSGIDaemonProcess <%= scope.lookupvar('djangoapp::client_name') %>.<%= scope.lookupvar('djangoapp::project_name') %> maximum-requests=5000 processes=2 threads=10
+    WSGIProcessGroup <%= scope.lookupvar('djangoapp::client_name') %>.<%= scope.lookupvar('djangoapp::project_name') %>
     WSGIApplicationGroup %{GLOBAL}
 
     WSGIScriptAlias / <%= scope.lookupvar('djangoapp::project_wsgi_path') %>
