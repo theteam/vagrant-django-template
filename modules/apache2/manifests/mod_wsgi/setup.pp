@@ -11,7 +11,7 @@ define apache2::mod_wsgi::setup($venv_path,
     file {$project_wsgi_path:
         content => template("apache2/mod_wsgi/project.wsgi.erb"),
         require => [
-                    File[$deployment_etc_path],
+                    File[$djangoapp::instance::deployment_etc_path],
                     Package["apache2"],
                     Package["libapache2-mod-wsgi"],
                    ],
