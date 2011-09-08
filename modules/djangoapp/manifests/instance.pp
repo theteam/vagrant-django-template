@@ -29,6 +29,8 @@ define djangoapp::instance($client_name="",
     $production_static_path = "${project_path}static/"
     $production_media_path = "${project_path}attachments/"
     $project_wsgi_path = "${deployment_etc_path}${full_project_name}.wsgi"
+    
+    $server_type = $machine::server_type
 
     # Create client and project paths
     # if they do not currently exist.
