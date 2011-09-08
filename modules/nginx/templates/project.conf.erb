@@ -43,7 +43,7 @@ server {
     <% end %>
 
     location <%= media_url %> {
-        <% if scope.lookupvar('machine::server_type') = 'vagrant' %>
+        <% if scope.lookupvar('machine::server_type') == 'vagrant' %>
             alias <%= scope.lookupvar('djangoapp::development_media_path') %>;
         <% else %>
             alias <%= scope.lookupvar('djangoapp::production_media_path') %>;
