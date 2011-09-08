@@ -3,8 +3,8 @@ define apache2::site($production_domain,
                      $owner="www-data",
                      $group="www-data") {
 
-    $sites_available_path = "/etc/apache2/sites-available/$full_project_name.conf" 
-    $sites_enabled_path = "/etc/apache2/sites-enabled/$full_project_name.conf"
+    $sites_available_path = "/etc/apache2/sites-available/${djangoapp::instance::full_project_name}.conf" 
+    $sites_enabled_path = "/etc/apache2/sites-enabled/${djangoapp::instance::full_project_name}.conf"
 
     file {$sites_available_path:
         content => template("apache2/project.conf.erb"),
