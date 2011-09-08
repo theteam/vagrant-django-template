@@ -1,24 +1,24 @@
 <VirtualHost *:81>
-    ServerAdmin <%= server_admin_email %>
-    <% if server_type == "vagrant" %>ServerAlias localhost<% end %>
-    ServerAlias <%= staging_domain %>
-    ServerAlias *.<%= production_domain %>
-    ServerName <%= production_domain %> 
+    ServerAdmin <%= scope.lookupvar('::server_admin_email') %>
+    <% if scope.lookupvar('machine::server_type') == "vagrant" %>ServerAlias localhost<% end %>
+    ServerAlias <%= scope.lookupvar('djangoapp::instance::staging_domain') %>
+    ServerAlias *.<%= scope.lookupvar('djangoapp::instance::production_domain') %>
+    ServerName <%= scope.lookupvar('djangoapp::instance::production_domain') %> 
 
-    ErrorLog /var/log/apache2/<%= full_project_name %>.error.log
-    CustomLog /var/log/apache2/<%= full_project_name %>.access.log combined
+    ErrorLog /var/log/apache2/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.error.log
+    CustomLog /var/log/apache2/<%= scope.lookupvar('djangoapp::instance::full_project_name') %>.access.log combined
     LogFormat "%h %l %u %t \"%r\" %>s %b  \"%{Host}i\" \"%{Referer}i\" \"%{User-Agent}i \" \"%{Cookie}i\""
 
     # Just in case, let's not serve /var/www as default.
     DocumentRoot /var/www/nginx-default
 
-    WSGIDaemonProcess <%= client_name %>.<%= project_name %> maximum-requests=5000 processes=2 threads=10
-    WSGIProcessGroup <%= client_name %>.<%= project_name %>
+    WSGIDaemonProcess <%= scope.lookupvar('djangoapp::instance::client_name') %>.<%= scope.lookupvar('djangoapp::instance::project_name') %> maximum-requests=5000 processes=2 threads=10
+    WSGIProcessGroup <%= scope.lookupvar('djangoapp::instance::client_name') %>.<%= scope.lookupvar('djangoapp::instance::project_name') %>
     WSGIApplicationGroup %{GLOBAL}
 
-    WSGIScriptAlias / <%= project_wsgi_path %>
+    WSGIScriptAlias / <%= scope.lookupvar('djangoapp::instance::project_wsgi_path') %>
 
-    <Directory <%= deployment_etc_path %>>
+    <Directory <%= scope.lookupvar('djangoapp::instance::deployment_etc_path') %>>
         Order deny,allow
         Allow from all
     </Directory>
